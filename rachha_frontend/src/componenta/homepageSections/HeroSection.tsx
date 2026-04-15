@@ -31,11 +31,15 @@ export default function HeroSection() {
 
 
       {/* black filter overlay */}
-      <div className="absolute inset-0 bg-black/40" />  
+      <div className="absolute inset-0 bg-black/50" />  
+
+
+      {/* royalGold gradient at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-gbrown to-transparent z-5" />
 
 
       {/* curved svg at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden">
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden z-10">
         <img
           src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776284910/Subtract_3_zeceex.svg"
           alt="Decorative bottom wave"
