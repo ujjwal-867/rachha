@@ -29,9 +29,23 @@ export default function HeroSection() {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      <div className="absolute inset-0 bg-black/40" />
 
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-6 text-center">
+      {/* black filter overlay */}
+      <div className="absolute inset-0 bg-black/40" />  
+
+
+      {/* curved svg at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden">
+        <img
+          src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776284910/Subtract_3_zeceex.svg"
+          alt="Decorative bottom wave"
+          className="pointer-events-none w-full h-auto object-cover"
+        />
+      </div>
+
+
+      {/* texts over the herosection */}
+      <div className="relative z-20 flex min-h-screen items-center justify-center px-6 text-center">
        
       </div>
     </section>
