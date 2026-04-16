@@ -1,11 +1,13 @@
 import HeroSection from '../homepageSections/HeroSection';
-import ServicesSection from '../homepageSections/ServicesSection';
+import AboutSection from '../homepageSections/AboutSection';
+import Services from '../homepageSections/Services';
 
 const Homepage = () => {
   return (
     <main>
       <HeroSection />
-      <ServicesSection />
+     <AboutSection/>
+     <Services/>
     </main>
   );
 };

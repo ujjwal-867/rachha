@@ -10,9 +10,9 @@ export default {
         roseMist: '#FFF0F3',   // Neutral Pink
         royalGold: '#D4AF37',  // Primary Gold
         pureWhite: '#FFFFFF',  // Secondary White
-        deepGold: '#AA8A2E',   // Darker shade for hover
+        deepGold: '#a57b22',   // Darker shade for hover
         charcoal: '#3D3522',   // Text color 
-        gbrown: '#3c2525',     // Brown color
+        gbrown: '#35220e',     // Brown color
       },
       fontFamily: {
         serif: ['Playfair Display', 'serif'], // primary

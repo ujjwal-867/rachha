@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import Button from '../ui/button/Button';
 
 const videoSources = [
     'https://res.cloudinary.com/dfr5w7ayr/video/upload/q_auto/f_auto/v1776280570/12796347_3840_2160_60fps_ozhh48.mp4',
@@ -34,7 +35,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-black/50" />  
 
 
-      {/* royalGold gradient at bottom */}
+      {/* brown gradient at bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-gbrown to-transparent z-5" />
 
 
@@ -49,8 +50,28 @@ export default function HeroSection() {
 
 
       {/* texts over the herosection */}
-      <div className="relative z-20 flex min-h-screen items-center justify-center px-6 text-center">
-       
+      <div className="relative z-20 flex min-h-screen items-center justify-center text-center flex-col "> 
+
+
+          <div>
+            <img
+                src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776364081/logo_gemeni_golden-removebg-preview_1_blfena.svg"
+                alt="Rachha logo"
+                className={`h-48 pb-10`}
+              />
+          </div>
+          
+          <div className='flex-col'>
+              <div className='gold-text-shine font-serif font-thin tracking-[0.1em] text-6xl uppercase'>We  Create  Your  Memories</div>
+              <div className='text-roseMist/90 font-sans font-thin tracking-[0.2em] text-1xl italic uppercase'>From ideas to celebration, we handel it all</div>
+          
+          </div>
+         
+
+          <div className='mt-10 flex gap-8'>
+            <Button text='SERVICES' variant='primary' ></Button>
+            <Button text='CONTACT' variant='secondary' ></Button>
+          </div>
       </div>
     </section>
   );

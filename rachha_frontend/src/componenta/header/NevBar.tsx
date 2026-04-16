@@ -81,12 +81,11 @@ export default function Navbar() {
               )}
             </div>
             <Link to="/" className="flex items-center justify-center">
-              <span className={`font-serif font-bold tracking-[0.2em] transition-all duration-300 ${
-                isScrolled ? 'text-[2.5rem] text-deepGold' : 'text-[3rem] text-pureWhite'
-              }`}
-              >
-                Rachha
-              </span>
+              <img
+                src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776364081/gemeni-namelogo-golden-removebg-preview_1_wgryid.svg"
+                alt="Rachha logo"
+                className={`transition-all duration-300 ${isScrolled ? 'h-12' : 'h-16'}`}
+              />
             </Link>
             <Link
               to="/gallery"
