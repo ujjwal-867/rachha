@@ -61,8 +61,24 @@
     margin-left: 2rem;
   }
 
+  .footer-divider {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.2s ease-out, opacity 1.2s ease-out;
+    opacity: 0;
+  }
+
+  .footer-divider.visible {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
   .card-bg-loop-reverse {
     animation-direction: reverse;
+  }
+
+  .circle-side-shadow {
+    box-shadow: 18px 0 40px -24px rgba(212, 175, 55, 0.55), -18px 0 40px -24px rgba(212, 175, 55, 0.55);
   }
 
   .gold-button {
