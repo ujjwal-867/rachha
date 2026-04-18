@@ -19,9 +19,9 @@ export default function AboutSection() {
 
               <div className="flex flex-col items-center justify-center gap-6">
                 <img
-                  src="https://res.cloudinary.com/dfr5w7ayr/image/upload/q_auto/f_auto/v1776407767/curev-garlend-white-background_1_1_rnfice.svg"
+                  src="https://res.cloudinary.com/dfr5w7ayr/image/upload/q_auto/f_auto/v1776503038/final-curve-garlend-nobackground_dzajh7.png"
                   alt="flower garlend curved"
-                  className="h-40 w-auto"
+                  className="h-56 w-auto rotate-180 translate-y-12"
                 />
 
                 <div className="gold-title-shine font-serif font-thin tracking-[0.1em] text-5xl md:text-5xl uppercase">

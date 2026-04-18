@@ -1,6 +1,5 @@
 import HeroSection from '../homepageSections/HeroSection';
 import AboutSection from '../homepageSections/AboutSection';
-import Services from '../homepageSections/Services';
 import Footer from '../footer/Footer';
 
 const Homepage = () => {
@@ -10,7 +9,7 @@ const Homepage = () => {
     <main>
       <HeroSection />
       <AboutSection />
-      <Services />
+     
       <Footer />
     </main>
   );

@@ -45,7 +45,7 @@ export default function Navbar() {
             >
               HOME
             </Link>
-            <div className="relative">
+            <div className="relative group">
               <button
                 onMouseEnter={() => setActiveDropdown(true)}
                 onMouseLeave={() => setActiveDropdown(false)}
@@ -54,31 +54,27 @@ export default function Navbar() {
                 SERVICES
                 <ChevronDown className={`w-4 h-4 transition-transform ${activeDropdown ? 'rotate-180' : ''}`} />
               </button>
-              {activeDropdown && (
-                <div className="absolute left-0 top-full mt-3 w-[280px] bg-pureWhite rounded-[24px] shadow-2xl border border-roseMist p-4">
-                  <Link
-                    to="/services"
-                    className="block rounded-2xl border border-roseMist px-4 py-3 hover:bg-roseMist transition"
-                  >
-                    <div className="text-sm font-semibold text-charcoal">Birthday Event</div>
-                    <p className="text-xs text-gray-500 mt-1">Premium celebration planning.</p>
-                  </Link>
-                  <Link
-                    to="/services"
-                    className="block rounded-2xl border border-roseMist px-4 py-3 mt-2 hover:bg-roseMist transition"
-                  >
-                    <div className="text-sm font-semibold text-charcoal">Wedding Event</div>
-                    <p className="text-xs text-gray-500 mt-1">Elegant ceremonies with seamless support.</p>
-                  </Link>
-                  <Link
-                    to="/services"
-                    className="block rounded-2xl border border-roseMist px-4 py-3 mt-2 hover:bg-roseMist transition"
-                  >
-                    <div className="text-sm font-semibold text-charcoal">Different Events</div>
-                    <p className="text-xs text-gray-500 mt-1">Custom experiences for every occasion.</p>
-                  </Link>
-                </div>
-              )}
+              <div
+                className={`absolute left-0 top-full mt-4 w-[320px] bg-pureWhite rounded-3xl shadow-2xl border border-roseMist/30 p-6 backdrop-blur-xl transition-all duration-300 origin-top ${
+                  activeDropdown
+                    ? 'opacity-100 visible scale-y-100'
+                    : 'opacity-0 invisible scale-y-95'
+                }`}
+                onMouseEnter={() => setActiveDropdown(true)}
+                onMouseLeave={() => setActiveDropdown(false)}
+              >
+                <Link
+                  to="/services/birthday-celebration"
+                  className="block rounded-2xl bg-gradient-to-br from-roseMist to-roseMist/50 px-6 py-4 hover:shadow-lg transition-all duration-300 group/item"
+                >
+                  <div className="text-sm font-serif font-semibold text-charcoal tracking-wide group-hover/item:text-royalGold transition-colors">
+                    Birthday Celebrations
+                  </div>
+                  <p className="text-xs text-charcoal/60 mt-2 font-sans font-light">
+                    Joyful celebrations tailored for you.
+                  </p>
+                </Link>
+              </div>
             </div>
             <Link to="/" className="flex items-center justify-center">
               <img
@@ -139,27 +135,13 @@ export default function Navbar() {
                   <ChevronDown className={`w-5 h-5 transition-transform ${activeMobileDropdown ? 'rotate-180' : ''}`} />
                 </button>
                 {activeMobileDropdown && (
-                  <div className="mt-2 ml-4 space-y-2">
+                  <div className="mt-3 ml-4 space-y-2 bg-gradient-to-br from-roseMist/40 to-roseMist/20 rounded-2xl p-4">
                     <Link
-                      to="/services"
+                      to="/services/birthday-celebration"
                       onClick={toggleMobileMenu}
-                      className="block px-4 py-3 text-[14px] font-sans text-charcoal rounded-lg hover:bg-roseMist transition-colors"
+                      className="block px-4 py-3 text-[14px] font-serif font-semibold text-charcoal rounded-lg hover:bg-roseMist transition-colors tracking-wide"
                     >
-                      Birthday Event
-                    </Link>
-                    <Link
-                      to="/services"
-                      onClick={toggleMobileMenu}
-                      className="block px-4 py-3 text-[14px] font-sans text-charcoal rounded-lg hover:bg-roseMist transition-colors"
-                    >
-                      Wedding Event
-                    </Link>
-                    <Link
-                      to="/services"
-                      onClick={toggleMobileMenu}
-                      className="block px-4 py-3 text-[14px] font-sans text-charcoal rounded-lg hover:bg-roseMist transition-colors"
-                    >
-                      Different Events
+                      Birthday Celebrations
                     </Link>
                   </div>
                 )}

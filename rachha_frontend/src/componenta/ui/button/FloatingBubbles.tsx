@@ -40,9 +40,8 @@
 
 
 import { motion } from 'motion/react';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { easeInOut } from 'motion/react';
-import { Component } from 'lucide-react'
 
 export interface BubbleData {
   image: string;
@@ -61,135 +60,254 @@ export function FloatingBubbles({
   largeSize = 200 
 }: FloatingBubblesProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [containerDimensions, setContainerDimensions] = useState({ width: 400, height: 300 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Generate random positions for each bubble
-  const getRandomPosition = (index: number) => {
-    // Hexagonal packing for even spacing
-    // This creates a honeycomb pattern with equal gaps
-    
-    const gap = smallSize * 0.15; // Gap between bubbles
-    const spacing = smallSize + gap;
-    
-    // Hexagonal grid arrangement
-    const positions = [];
-    let currentIndex = 0;
-    
-    // Center bubble
-    positions.push({ x: 0, y: 0 });
-    
-    // Create rings around center
-    for (let ring = 1; ring <= 3; ring++) {
-      const bubblesInRing = ring * 6;
-      const radius = ring * spacing;
-      
-      for (let i = 0; i < bubblesInRing; i++) {
-        const angle = (i / bubblesInRing) * Math.PI * 2;
-        positions.push({
-          x: Math.cos(angle) * radius,
-          y: Math.sin(angle) * radius,
+  useEffect(() => {
+    const measureContainer = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setContainerDimensions({
+          width: Math.max(rect.width, 300),
+          height: Math.max(rect.height, 200),
         });
       }
+    };
+
+    const timer = setTimeout(measureContainer, 100);
+    window.addEventListener('resize', measureContainer);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', measureContainer);
+    };
+  }, []);
+
+  const calculateBubbleLayout = () => {
+    const bubbleCount = bubbles.length;
+    const { width, height } = containerDimensions;
+
+    let cols = Math.ceil(Math.sqrt(bubbleCount));
+    let rows = Math.ceil(bubbleCount / cols);
+
+    if (bubbleCount === 6) {
+      cols = 3;
+      rows = 2;
+    } else if (bubbleCount <= 5) {
+      cols = bubbleCount;
+      rows = 1;
+    } else if (bubbleCount <= 9) {
+      cols = 3;
+      rows = 3;
+    } else {
+      cols = Math.ceil(Math.sqrt(bubbleCount));
+      rows = Math.ceil(bubbleCount / cols);
     }
+
+    const marginX = width * 0.05;
+    const marginY = height * 0.1;
+    const usableWidth = width - marginX * 2;
+    const usableHeight = height - marginY * 2;
+
+    let calculatedSmallSize, calculatedLargeSize;
     
-    // Get position for this bubble
-    const pos = positions[index] || positions[positions.length - 1];
-    
+    if (bubbleCount <= 5) {
+      const maxBubbleWidth = usableWidth / cols;
+      const maxSize = maxBubbleWidth * 0.9;
+      calculatedSmallSize = Math.max(50, Math.min(smallSize, maxSize));
+      calculatedLargeSize = Math.min(largeSize, maxSize * 1.2);
+    } else {
+      const maxBubbleWidth = usableWidth / cols;
+      const maxBubbleHeight = usableHeight / rows;
+      const maxSize = Math.min(maxBubbleWidth, maxBubbleHeight) * 0.75;
+      
+      calculatedSmallSize = Math.max(50, Math.min(smallSize, maxSize * 0.95));
+      calculatedLargeSize = Math.min(largeSize, maxSize * 1.3);
+    }
+
     return {
-      top: `calc(50% + ${pos.y}px)`,
-      left: `calc(50% + ${pos.x}px)`,
+      cols,
+      rows,
+      calculatedSmallSize,
+      calculatedLargeSize,
+      marginX,
+      marginY,
+      usableWidth,
+      usableHeight,
     };
   };
 
-  // Floating animation variants
+  const layout = calculateBubbleLayout();
+
+  const getBubblePosition = (index: number) => {
+    const col = index % layout.cols;
+    const row = Math.floor(index / layout.cols);
+
+    const cellWidth = layout.usableWidth / layout.cols;
+    const cellHeight = layout.usableHeight / layout.rows;
+
+    const gridStartX = -layout.usableWidth / 2;
+    const gridStartY = -layout.usableHeight / 2;
+    
+    const x = gridStartX + cellWidth * col + cellWidth / 2;
+    const y = gridStartY + cellHeight * row + cellHeight / 2;
+
+    return {
+      top: `calc(50% + ${y}px)`,
+      left: `calc(50% + ${x}px)`,
+    };
+  };
+
   const floatingAnimation = (index: number) => ({
-    y: [0, -20, 0],
+    y: [0, -15, 0],
     x: [0, index % 2 === 0 ? 10 : -10, 0],
+    rotate: [0, index % 2 === 0 ? 3 : -3, 0],
     transition: {
-      duration: 3 + (index % 3),
+      duration: 4 + (index % 2),
       repeat: Infinity,
       ease: easeInOut,
+      delay: index * 0.15,
     },
   });
 
   return (
-    <div className="inset-0 pointer-events-none">
-      {bubbles.map((bubble, index) => {
-        const position = getRandomPosition(index);
-        const isHovered = hoveredIndex === index;
+    <div className="absolute inset-0 pointer-events-none">
+      <div 
+        ref={containerRef} 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          transform: 'translate(-50px, -50px)',
+        }}
+      >
+        {bubbles.map((bubble, index) => {
+          const position = getBubblePosition(index);
+          const isHovered = hoveredIndex === index;
 
-        return (
-          <motion.div
-            key={index}
-            className="absolute pointer-events-auto cursor-pointer"
-            style={{
-              top: position.top,
-              left: position.left,
-              zIndex: isHovered ? 50 : 10,
-            }}
-            animate={floatingAnimation(index)}
-            onHoverStart={() => setHoveredIndex(index)}
-            onHoverEnd={() => setHoveredIndex(null)}
-          >
+          return (
             <motion.div
-              className="relative rounded-full overflow-hidden shadow-lg"
-              animate={{
-                width: isHovered ? largeSize : smallSize,
-                height: isHovered ? largeSize : smallSize,
-                scale: isHovered ? 1 : 1,
+              key={index}
+              className="absolute pointer-events-auto cursor-pointer"
+              style={{
+                top: position.top,
+                left: position.left,
+                zIndex: isHovered ? 50 : 10,
+                transform: 'translate(-80%, -80%)',
+                // Flex column: bubble on top, label below — always perfectly centred
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
               }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 25,
-              }}
+              animate={floatingAnimation(index)}
+              onHoverStart={() => setHoveredIndex(index)}
+              onHoverEnd={() => setHoveredIndex(null)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {/* Image Container */}
+              {/* ── Bubble ── */}
               <motion.div
-                className="absolute inset-0"
+                className="relative rounded-full overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 flex-shrink-0"
                 animate={{
-                  scale: isHovered ? 1 : 1.2,
+                  width: isHovered ? layout.calculatedLargeSize : layout.calculatedSmallSize,
+                  height: isHovered ? layout.calculatedLargeSize : layout.calculatedSmallSize,
+                  boxShadow: isHovered
+                    ? '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1)'
+                    : '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05)',
                 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 25,
-                }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
               >
-                <img
-                  src={bubble.image}
-                  alt={bubble.text} 
-                  className="w-full h-full object-cover"
+                {/* Image */}
+                <motion.div
+                  className="absolute inset-0"
+                  animate={{
+                    scale: isHovered ? 1.1 : 1.3,
+                    filter: isHovered ? 'brightness(1.1) contrast(1.1)' : 'brightness(1) contrast(1)',
+                  }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                >
+                  <img
+                    src={bubble.image}
+                    alt={bubble.text}
+                    className="w-full h-full object-cover transition-all duration-500"
+                  />
+                </motion.div>
+
+                {/* Watermark overlay on small bubble */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-end justify-center p-2 md:p-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isHovered ? 0 : 0.5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <p className="font-serif text-white text-center font-medium text-xs leading-tight tracking-[0.05em] uppercase drop-shadow-lg">
+                    {bubble.text}
+                  </p>
+                </motion.div>
+
+                {/* Gold glowing border */}
+                <motion.div
+                  className="absolute inset-0 rounded-full border-2"
+                  style={{
+                    borderColor: isHovered ? 'rgba(184, 134, 11, 0.8)' : 'rgba(255, 255, 255, 0.3)',
+                    boxShadow: isHovered ? '0 0 30px rgba(184, 134, 11, 0.4)' : 'none',
+                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isHovered ? 1 : 0 }}
+                  transition={{ duration: 0.4 }}
+                />
+
+                {/* Inner glow */}
+                <motion.div
+                  className="absolute inset-2 rounded-full"
+                  style={{
+                    background: isHovered
+                      ? 'radial-gradient(circle, rgba(184, 134, 11, 0.1) 0%, transparent 70%)'
+                      : 'none',
+                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isHovered ? 1 : 0 }}
+                  transition={{ duration: 0.4 }}
                 />
               </motion.div>
 
-              {/* Overlay with gradient and text */}
+              {/* ── Title label ──
+                  Sits in normal flex flow directly below the bubble, so it is
+                  always perfectly centred under the image with zero extra math.
+                  - whiteSpace: nowrap  → always single line, no wrapping
+                  - width: fit-content  → pill shrinks/grows to text length exactly
+                  - maxWidth: 340px     → safety cap for extremely long titles
+              */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end justify-center p-6"
-                initial={{ opacity: 0 }}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                  borderRadius: '6px',
+                  width: 'fit-content',
+                  maxWidth: '340px',
+                  whiteSpace: 'nowrap',
+                  alignSelf: 'center',
+                  pointerEvents: 'none',
+                  overflow: 'hidden',
+                }}
                 animate={{
                   opacity: isHovered ? 1 : 0,
+                  scale: isHovered ? 1 : 0.8,
+                  marginTop: isHovered ? 10 : 0,
+                  paddingTop: isHovered ? 4 : 0,
+                  paddingBottom: isHovered ? 4 : 0,
+                  paddingLeft: isHovered ? 12 : 0,
+                  paddingRight: isHovered ? 12 : 0,
+                  maxHeight: isHovered ? 48 : 0,
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
               >
-                <p className="text-white text-center font-medium text-xs leading-tight break-words">
-
+                <p className="gold-title-shine font-serif text-sm md:text-base font-medium tracking-[0.05em] uppercase m-0 leading-normal">
                   {bubble.text}
                 </p>
               </motion.div>
-
-              {/* Glowing border on hover */}
-              <motion.div
-                className="absolute inset-0 rounded-full border-2 border-white/50"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: isHovered ? 1 : 0,
-                }}
-                transition={{ duration: 0.3 }}
-              />
             </motion.div>
-          </motion.div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
