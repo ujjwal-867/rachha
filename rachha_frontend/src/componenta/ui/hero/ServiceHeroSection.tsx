@@ -81,7 +81,7 @@ export function ServiceHeroSection({
       )}
 
       {/* Enhanced Curved SVG at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden z-20">
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden z-20 -mb-px">
         <img
           src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776284910/Subtract_3_zeceex.svg"
           alt="Decorative bottom wave"

@@ -15,16 +15,16 @@ export default function AboutSection() {
             {/* <div className="relative z-10 rounded-[2rem] border-2 border-royalGold backdrop-blur-lg p-8 md:p-12 shadow-[0_25px_80px_-40px_rgba(0,0,0,0.25)]">  */}
 
             {/* <div className="relative z-10 rounded  backdrop-blur-lg p-8 md:p-12 shadow-[0_25px_80px_-40px_rgba(212,175,55)]">  */}
-            <div className="relative z-10 h-[45rem] rounded-full flex flex-col items-center justify-start gap-8 bg-white/20 backdrop-blur-lg p-8 md:p-12  text-center">
-
-              <div className="flex flex-col items-center justify-center gap-6">
+            <div className="relative z-10 h-[45rem] rounded-full flex flex-col items-center justify-start gap-8 bg-white/20 backdrop-blur-lg p-8 md:p-12  text-center ">
+              <div className="-translate-y-14">
+                 <div className="flex flex-col items-center justify-center gap-6">
                 <img
                   src="https://res.cloudinary.com/dfr5w7ayr/image/upload/q_auto/f_auto/v1776503038/final-curve-garlend-nobackground_dzajh7.png"
                   alt="flower garlend curved"
                   className="h-56 w-auto rotate-180 translate-y-12"
                 />
 
-                <div className="gold-title-shine font-serif font-thin tracking-[0.1em] text-5xl md:text-5xl uppercase">
+                <div className="gold-title-shine font-serif font-thin tracking-[0.1em] text-5xl md:text-5xl uppercase mb-12">
                   About Us
                 </div>
               </div>
@@ -48,6 +48,8 @@ export default function AboutSection() {
                   Whether it’s a small gathering or a big wedding, we ensure everything is perfectly managed so you can enjoy your special day.
                 </p>
               </div>
+              </div>
+             
           </div>
         </div>
       </div>
