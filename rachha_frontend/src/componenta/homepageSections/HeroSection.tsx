@@ -31,6 +31,7 @@ export default function HeroSection() {
       />
 
 
+
       {/* black filter overlay */}
       <div className="absolute inset-0 bg-black/50" />  
 
@@ -40,12 +41,22 @@ export default function HeroSection() {
 
 
       {/* curved svg at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden z-10">
-        <img
-          src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776284910/Subtract_3_zeceex.svg"
-          alt="Decorative bottom wave"
-          className="pointer-events-none w-full h-auto object-cover"
-        />
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden z-10 leading-none -mb-px">
+        <svg
+          width="29914"
+          height="896"
+          viewBox="0 0 29914 896"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          preserveAspectRatio="none"
+          className="pointer-events-none w-full h-auto object-cover block"
+        >
+          <path
+            d="M14956.9 0C20490.3 0 25634.2 329.992 29913.9 896H0C4279.74 329.992 9423.61 0 14956.9 0Z"
+            fill="#FFF0F3"
+          />
+        </svg>
       </div>
 
 

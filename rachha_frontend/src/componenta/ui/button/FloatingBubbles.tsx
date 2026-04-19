@@ -1,313 +1,262 @@
-
-// HOW TO USE THIS UI COMPONEN
-
-//       const sampleBubbles: BubbleData[] = [
-//   {
-//     image: 'https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMHdvbWFuJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc3NjM4NTI3MXww&ixlib=rb-4.1.0&q=80&w=1080',
-//     text: 'Professional Excellence',
-//   },
-//   {
-//     image: 'https://images.unsplash.com/photo-1622626426572-c268eb006092?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwb3J0cmFpdCUyMG1hbiUyMGJ1c2luZXNzfGVufDF8fHx8MTc3NjM5NDg3OXww&ixlib=rb-4.1.0&q=80&w=1080',
-//     text: 'Business Innovation',
-//   },
-//   {
-//     image: 'https://images.unsplash.com/photo-1598439473183-42c9301db5dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxuYXR1cmUlMjBsYW5kc2NhcGUlMjBtb3VudGFpbnxlbnwxfHx8fDE3NzYzNTI1MjR8MA&ixlib=rb-4.1.0&q=80&w=1080',
-//     text: 'Mountain Adventures',
-//   },
-//   {
-//     image: 'https://images.unsplash.com/photo-1598399929533-847def01aa41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvY2VhbiUyMGJlYWNoJTIwc3Vuc2V0fGVufDF8fHx8MTc3NjM3MDYyOHww&ixlib=rb-4.1.0&q=80&w=1080',
-//     text: 'Ocean Serenity',
-//   },
-//   {
-//     image: 'https://images.unsplash.com/photo-1616130007484-24a2c05fdfbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2ZmZWUlMjBjdXAlMjB3b3Jrc3BhY2V8ZW58MXx8fHwxNzc2MzgyMjc1fDA&ixlib=rb-4.1.0&q=80&w=1080',
-//     text: 'Coffee & Creativity',
-//   },
-//   {
-//     image: 'https://images.unsplash.com/photo-1652876256405-3902cc201b22?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcmNoaXRlY3R1cmUlMjBtb2Rlcm4lMjBidWlsZGluZ3xlbnwxfHx8fDE3NzYzMTE3MzR8MA&ixlib=rb-4.1.0&q=80&w=1080',
-//     text: 'Modern Architecture',
-//   },
-// ];
-
-
-//                     <FloatingBubbles bubbles={sampleBubbles} smallSize={80} largeSize={220} />
-
-
-// smallSize: The default diameter of the bubbles when they're just floating around (not hovered). Currently set to 80px in your App.tsx
-
-// largeSize: The diameter the bubble grows to when you hover over it. Currently set to 220px in your App.tsx
-
-
-
-
-import { motion } from 'motion/react';
-import { useState, useRef, useEffect } from 'react';
-import { easeInOut } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
 
 export interface BubbleData {
-  image: string;
-  text: string;
+	image: string;
+	text: string;
 }
 
 interface FloatingBubblesProps {
-  bubbles: BubbleData[];
-  smallSize?: number;
-  largeSize?: number;
+	bubbles: BubbleData[];
+	smallSize?: number;
+	largeSize?: number;
+	className?: string;
+	columnsPerRow?: number;
 }
 
-export function FloatingBubbles({ 
-  bubbles, 
-  smallSize = 64, 
-  largeSize = 200 
+type ContainerSize = {
+	width: number;
+	height: number;
+};
+
+export function FloatingBubbles({
+	bubbles,
+	smallSize = 124,
+	largeSize = 300,
+	className,
+	columnsPerRow,
 }: FloatingBubblesProps) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [containerDimensions, setContainerDimensions] = useState({ width: 400, height: 300 });
-  const containerRef = useRef<HTMLDivElement>(null);
+	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+	const [containerSize, setContainerSize] = useState<ContainerSize>({ width: 0, height: 0 });
+	const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const measureContainer = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setContainerDimensions({
-          width: Math.max(rect.width, 300),
-          height: Math.max(rect.height, 200),
-        });
-      }
-    };
+	useEffect(() => {
+		const element = containerRef.current;
 
-    const timer = setTimeout(measureContainer, 100);
-    window.addEventListener('resize', measureContainer);
-    
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', measureContainer);
-    };
-  }, []);
+		if (!element) {
+			return;
+		}
 
-  const calculateBubbleLayout = () => {
-    const bubbleCount = bubbles.length;
-    const { width, height } = containerDimensions;
+		const measure = () => {
+			const rect = element.getBoundingClientRect();
 
-    let cols = Math.ceil(Math.sqrt(bubbleCount));
-    let rows = Math.ceil(bubbleCount / cols);
+			setContainerSize({
+				width: rect.width,
+				height: rect.height,
+			});
+		};
 
-    if (bubbleCount === 6) {
-      cols = 3;
-      rows = 2;
-    } else if (bubbleCount <= 5) {
-      cols = bubbleCount;
-      rows = 1;
-    } else if (bubbleCount <= 9) {
-      cols = 3;
-      rows = 3;
-    } else {
-      cols = Math.ceil(Math.sqrt(bubbleCount));
-      rows = Math.ceil(bubbleCount / cols);
-    }
+		measure();
 
-    const marginX = width * 0.05;
-    const marginY = height * 0.1;
-    const usableWidth = width - marginX * 2;
-    const usableHeight = height - marginY * 2;
+		const resizeObserver = new ResizeObserver(() => {
+			measure();
+		});
 
-    let calculatedSmallSize, calculatedLargeSize;
-    
-    if (bubbleCount <= 5) {
-      const maxBubbleWidth = usableWidth / cols;
-      const maxSize = maxBubbleWidth * 0.9;
-      calculatedSmallSize = Math.max(50, Math.min(smallSize, maxSize));
-      calculatedLargeSize = Math.min(largeSize, maxSize * 1.2);
-    } else {
-      const maxBubbleWidth = usableWidth / cols;
-      const maxBubbleHeight = usableHeight / rows;
-      const maxSize = Math.min(maxBubbleWidth, maxBubbleHeight) * 0.75;
-      
-      calculatedSmallSize = Math.max(50, Math.min(smallSize, maxSize * 0.95));
-      calculatedLargeSize = Math.min(largeSize, maxSize * 1.3);
-    }
+		resizeObserver.observe(element);
+		window.addEventListener('resize', measure);
 
-    return {
-      cols,
-      rows,
-      calculatedSmallSize,
-      calculatedLargeSize,
-      marginX,
-      marginY,
-      usableWidth,
-      usableHeight,
-    };
-  };
+		return () => {
+			resizeObserver.disconnect();
+			window.removeEventListener('resize', measure);
+		};
+	}, []);
 
-  const layout = calculateBubbleLayout();
+	const bubbleCount = bubbles.length;
+	if (bubbleCount === 0) {
+		return null;
+	}
 
-  const getBubblePosition = (index: number) => {
-    const col = index % layout.cols;
-    const row = Math.floor(index / layout.cols);
+	const columns = (() => {
+		if (columnsPerRow && columnsPerRow > 0) {
+			return Math.min(columnsPerRow, bubbleCount);
+		}
+		if (bubbleCount <= 1) return 1;
+		if (bubbleCount === 2) return 2;
+		if (containerSize.width < 520) return Math.min(2, bubbleCount);
+		if (containerSize.width < 820) return Math.min(3, bubbleCount);
+		if (containerSize.width < 1200) return Math.min(4, bubbleCount);
+		return Math.min(5, bubbleCount);
+	})();
 
-    const cellWidth = layout.usableWidth / layout.cols;
-    const cellHeight = layout.usableHeight / layout.rows;
+	const rows = Math.max(1, Math.ceil(bubbleCount / columns));
+	const paddingX = containerSize.width < 640 ? 14 : 20;
+	const paddingY = containerSize.height < 420 ? 6 : 10;
+	const availableWidth = Math.max(containerSize.width - paddingX * 2, 0);
+	const availableHeight = Math.max(containerSize.height - paddingY * 2, 0);
 
-    const gridStartX = -layout.usableWidth / 2;
-    const gridStartY = -layout.usableHeight / 2;
-    
-    const x = gridStartX + cellWidth * col + cellWidth / 2;
-    const y = gridStartY + cellHeight * row + cellHeight / 2;
+	const horizontalGap = containerSize.width < 640 ? 12 : 16;
+	const verticalGap = containerSize.height < 500 ? 12 : 16;
+	const fitByWidth = columns > 0 ? (availableWidth - horizontalGap * (columns - 1)) / columns : availableWidth;
+	const fitByHeight = rows > 0 ? (availableHeight - verticalGap * (rows - 1)) / rows : availableHeight;
 
-    return {
-      top: `calc(50% + ${y}px)`,
-      left: `calc(50% + ${x}px)`,
-    };
-  };
+	const densityFactor = Math.max(0.72, 1 - Math.max(0, bubbleCount - 6) * 0.04);
+	const sparseBoost = bubbleCount <= 4 ? 1.2 : bubbleCount <= 6 ? 1.08 : 1;
+	const adaptivePreferredSize = smallSize * densityFactor * sparseBoost;
 
-  const floatingAnimation = (index: number) => ({
-    y: [0, -15, 0],
-    x: [0, index % 2 === 0 ? 10 : -10, 0],
-    rotate: [0, index % 2 === 0 ? 3 : -3, 0],
-    transition: {
-      duration: 4 + (index % 2),
-      repeat: Infinity,
-      ease: easeInOut,
-      delay: index * 0.15,
-    },
-  });
+	const bubbleDiameter = Math.min(
+		adaptivePreferredSize,
+		Math.max(64, Math.min(fitByWidth, fitByHeight)),
+	);
 
-  return (
-    <div className="absolute inset-0 pointer-events-none">
-      <div 
-        ref={containerRef} 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          transform: 'translate(-50px, -50px)',
-        }}
-      >
-        {bubbles.map((bubble, index) => {
-          const position = getBubblePosition(index);
-          const isHovered = hoveredIndex === index;
+	const hoverBoost = bubbleCount <= 6 ? 1.55 : bubbleCount <= 10 ? 1.42 : 1.32;
+	const hoverDiameter = Math.min(
+		largeSize,
+		Math.max(
+			bubbleDiameter * hoverBoost,
+			Math.min(fitByWidth * 1.22, fitByHeight * 1.22),
+		),
+	);
 
-          return (
-            <motion.div
-              key={index}
-              className="absolute pointer-events-auto cursor-pointer"
-              style={{
-                top: position.top,
-                left: position.left,
-                zIndex: isHovered ? 50 : 10,
-                transform: 'translate(-80%, -80%)',
-                // Flex column: bubble on top, label below — always perfectly centred
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-              animate={floatingAnimation(index)}
-              onHoverStart={() => setHoveredIndex(index)}
-              onHoverEnd={() => setHoveredIndex(null)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {/* ── Bubble ── */}
-              <motion.div
-                className="relative rounded-full overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 flex-shrink-0"
-                animate={{
-                  width: isHovered ? layout.calculatedLargeSize : layout.calculatedSmallSize,
-                  height: isHovered ? layout.calculatedLargeSize : layout.calculatedSmallSize,
-                  boxShadow: isHovered
-                    ? '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1)'
-                    : '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05)',
-                }}
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              >
-                {/* Image */}
-                <motion.div
-                  className="absolute inset-0"
-                  animate={{
-                    scale: isHovered ? 1.1 : 1.3,
-                    filter: isHovered ? 'brightness(1.1) contrast(1.1)' : 'brightness(1) contrast(1)',
-                  }}
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                >
-                  <img
-                    src={bubble.image}
-                    alt={bubble.text}
-                    className="w-full h-full object-cover transition-all duration-500"
-                  />
-                </motion.div>
+	const rowData = Array.from({ length: rows }, (_, rowIndex) => {
+		const start = rowIndex * columns;
+		const items = bubbles.slice(start, start + columns);
 
-                {/* Watermark overlay on small bubble */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-end justify-center p-2 md:p-3"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: isHovered ? 0 : 0.5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <p className="font-serif text-white text-center font-medium text-xs leading-tight tracking-[0.05em] uppercase drop-shadow-lg">
-                    {bubble.text}
-                  </p>
-                </motion.div>
+		return {
+			start,
+			items,
+		};
+	});
 
-                {/* Gold glowing border */}
-                <motion.div
-                  className="absolute inset-0 rounded-full border-2"
-                  style={{
-                    borderColor: isHovered ? 'rgba(184, 134, 11, 0.8)' : 'rgba(255, 255, 255, 0.3)',
-                    boxShadow: isHovered ? '0 0 30px rgba(184, 134, 11, 0.4)' : 'none',
-                  }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: isHovered ? 1 : 0 }}
-                  transition={{ duration: 0.4 }}
-                />
+	const getGridDistance = (index: number) => {
+		if (hoveredIndex === null) {
+			return Infinity;
+		}
 
-                {/* Inner glow */}
-                <motion.div
-                  className="absolute inset-2 rounded-full"
-                  style={{
-                    background: isHovered
-                      ? 'radial-gradient(circle, rgba(184, 134, 11, 0.1) 0%, transparent 70%)'
-                      : 'none',
-                  }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: isHovered ? 1 : 0 }}
-                  transition={{ duration: 0.4 }}
-                />
-              </motion.div>
+		const row = Math.floor(index / columns);
+		const col = index % columns;
+		const hoveredRow = Math.floor(hoveredIndex / columns);
+		const hoveredCol = hoveredIndex % columns;
 
-              {/* ── Title label ──
-                  Sits in normal flex flow directly below the bubble, so it is
-                  always perfectly centred under the image with zero extra math.
-                  - whiteSpace: nowrap  → always single line, no wrapping
-                  - width: fit-content  → pill shrinks/grows to text length exactly
-                  - maxWidth: 340px     → safety cap for extremely long titles
-              */}
-              <motion.div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.95)',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                  borderRadius: '6px',
-                  width: 'fit-content',
-                  maxWidth: '340px',
-                  whiteSpace: 'nowrap',
-                  alignSelf: 'center',
-                  pointerEvents: 'none',
-                  overflow: 'hidden',
-                }}
-                animate={{
-                  opacity: isHovered ? 1 : 0,
-                  scale: isHovered ? 1 : 0.8,
-                  marginTop: isHovered ? 10 : 0,
-                  paddingTop: isHovered ? 4 : 0,
-                  paddingBottom: isHovered ? 4 : 0,
-                  paddingLeft: isHovered ? 12 : 0,
-                  paddingRight: isHovered ? 12 : 0,
-                  maxHeight: isHovered ? 48 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              >
-                <p className="gold-title-shine font-serif text-sm md:text-base font-medium tracking-[0.05em] uppercase m-0 leading-normal">
-                  {bubble.text}
-                </p>
-              </motion.div>
-            </motion.div>
-          );
-        })}
-      </div>
-    </div>
-  );
+		const dx = col - hoveredCol;
+		const dy = row - hoveredRow;
+
+		return Math.sqrt(dx * dx + dy * dy);
+	};
+
+	const getBubbleMotion = (index: number) => {
+		const gridDistance = getGridDistance(index);
+		const influence = Number.isFinite(gridDistance) ? Math.max(0, 1 - gridDistance / 2.4) : 0;
+		const neighborLift = influence ** 0.75;
+		const neighborScaleMax = bubbleCount <= 6 ? 0.44 : bubbleCount <= 10 ? 0.36 : 0.28;
+
+		const isHoveredBubble = hoveredIndex === index;
+		const size = isHoveredBubble
+			? hoverDiameter
+			: bubbleDiameter * (1 + neighborScaleMax * neighborLift);
+
+		return {
+			x: 0,
+			y: 0,
+			size,
+			rotate: 0,
+			isHoveredBubble,
+		};
+	};
+
+	return (
+		<div
+			ref={containerRef}
+			className={[
+				'absolute inset-0 overflow-visible pointer-events-auto',
+				className ?? '',
+			].join(' ')}
+		>
+			<div className="flex h-full w-full flex-col items-center justify-center px-3 py-0 md:px-4 md:py-0">
+				<div className="flex w-full flex-col items-center justify-center gap-y-4 md:gap-y-5">
+				{rowData.map((row) => (
+					<div key={`row-${row.start}`} className="flex w-full justify-center gap-x-3 md:gap-x-4">
+						{row.items.map((bubble, itemIndex) => {
+							const index = row.start + itemIndex;
+							const isHovered = hoveredIndex === index;
+							const motionState = getBubbleMotion(index);
+							const displaySize = motionState.size;
+
+							return (
+								<motion.div
+									key={`${bubble.text}-${index}`}
+									className="relative flex min-h-[1px] items-center justify-center cursor-pointer"
+									style={{ zIndex: isHovered ? 30 : 10 }}
+									animate={{
+										x: motionState.x,
+										y: motionState.y,
+										rotate: motionState.rotate,
+									}}
+									transition={{ type: 'spring', stiffness: 340, damping: 24 }}
+									whileHover={{ zIndex: 40 }}
+									onHoverStart={() => setHoveredIndex(index)}
+									onHoverEnd={() => setHoveredIndex(null)}
+									onClick={() => {
+										if (hoveredIndex === index) {
+											setHoveredIndex(null);
+										} else {
+											setHoveredIndex(index);
+										}
+									}}
+								>
+									<AnimatePresence>
+										{motionState.isHoveredBubble && (
+											<motion.div
+												initial={{ opacity: 0, y: 12 }}
+												animate={{ opacity: 1, y: 0 }}
+												exit={{ opacity: 0, y: 8 }}
+												transition={{ duration: 0.2 }}
+										className="pointer-events-none absolute bottom-full z-20 mb-3 rounded-full border border-royalGold/30 bg-white/90 px-3 py-1 text-center text-[11px] font-serif uppercase tracking-[0.12em] text-charcoal shadow-[0_10px_30px_rgba(61,53,34,0.14)] backdrop-blur-md"
+												style={{
+													left: '5%',
+													transform: 'translateX(-50%)',
+													width: 'max-content',
+													maxWidth: 'min(220px, 62vw)',
+													whiteSpace: 'normal',
+													lineHeight: 1.2,
+												}}
+											>
+												{bubble.text}
+											</motion.div>
+										)}
+									</AnimatePresence>
+
+									<motion.div
+										className="relative flex-shrink-0 overflow-hidden rounded-full border border-royalGold/25 shadow-[0_14px_30px_rgba(61,53,34,0.18)]"
+										animate={{
+											width: displaySize,
+											height: displaySize,
+											boxShadow: motionState.isHoveredBubble
+												? '0 34px 70px -18px rgba(61, 53, 34, 0.4), 0 0 0 1px rgba(212, 175, 55, 0.26)'
+												: '0 14px 30px -14px rgba(61, 53, 34, 0.18)',
+										}}
+										transition={{ type: 'spring', stiffness: 360, damping: 24 }}
+									>
+										<motion.div
+											className="absolute inset-0"
+											animate={{ scale: motionState.isHoveredBubble ? 1.14 : 1.03 }}
+											transition={{ type: 'spring', stiffness: 360, damping: 24 }}
+										>
+											<img
+												src={bubble.image}
+												alt={bubble.text}
+												className="h-full w-full object-cover"
+											/>
+										</motion.div>
+
+										<div className="absolute inset-0 bg-gradient-to-t from-charcoal/20 via-transparent to-transparent" />
+
+										<motion.div
+											className="absolute inset-0 rounded-full border-2"
+											animate={{
+												opacity: motionState.isHoveredBubble ? 1 : 0,
+												borderColor: 'rgba(212, 175, 55, 0.8)',
+												boxShadow: '0 0 48px rgba(212, 175, 55, 0.58)',
+											}}
+											transition={{ duration: 0.25 }}
+										/>
+									</motion.div>
+								</motion.div>
+							);
+						})}
+					</div>
+				))}
+				</div>
+			</div>
+		</div>
+	);
 }

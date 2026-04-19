@@ -1,6 +1,6 @@
 import HeroSection from '../homepageSections/HeroSection';
+import HomePageServiceFeature from '../homepageSections/HomePageServiceFeature';
 import AboutSection from '../homepageSections/AboutSection';
-import Footer from '../footer/Footer';
 
 const Homepage = () => {
 
@@ -9,8 +9,7 @@ const Homepage = () => {
     <main>
       <HeroSection />
       <AboutSection />
-     
-      <Footer />
+      <HomePageServiceFeature />
     </main>
   );
 };
