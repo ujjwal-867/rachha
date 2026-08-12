@@ -54,9 +54,9 @@ const Footer = () => {
         <div className="mt-12 grid gap-10 text-center text-sm text-white/80 md:grid-cols-3">
           <div className="space-y-4">
             <h3 className="text-lg font-serif uppercase tracking-[0.3em] text-royalGold">Contact</h3>
-            <p><a href="mailto:hello@rachha.com" className="hover:text-royalGold transition-colors">hello@rachha.com</a></p>
-            <p><a href="tel:+919876543210" className="hover:text-royalGold transition-colors">+91 98765 43210</a></p>
-            <p><a href="https://maps.google.com/?q=New+Delhi,+India" target="_blank" rel="noopener noreferrer" className="hover:text-royalGold transition-colors">New Delhi, India</a></p>
+            <p><a href="mailto:rachha346@gmail.com" className="hover:text-royalGold transition-colors">rachha346@gmail.com</a></p>
+            <p><a href="tel:+919335243958" className="hover:text-royalGold transition-colors">+91 93352 43958</a></p>
+            <p><a href="https://maps.google.com/?q=Thane,+Mumbai,+Maharashtra" target="_blank" rel="noopener noreferrer" className="hover:text-royalGold transition-colors">Thane, Mumbai, Maharashtra</a></p>
           </div>
 
           <div className="space-y-4">

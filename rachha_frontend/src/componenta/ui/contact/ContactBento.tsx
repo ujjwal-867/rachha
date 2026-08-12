@@ -6,7 +6,7 @@ import Button from "../button/Button";
 // const EMAILJS_SERVICE_ID = "service_2yojg4q";
 const EMAILJS_SERVICE_ID = "service_5smhwex";
 
-
+//rachha346@gmail.com
 // const EMAILJS_TEMPLATE_ID = "template_cpf907g";
 const EMAILJS_TEMPLATE_ID = "template_1jvhkxh";
 // const EMAILJS_PUBLIC_KEY = "Y8FkaihrMzE-Si5A8";
@@ -225,25 +225,25 @@ export default function ContactBento() {
             <div className="flex items-center gap-3 text-left">
               <Phone className="w-4 h-4 text-royalGold shrink-0" />
               <span className="font-sans text-sm text-white/80">
-                +91 98765 43210
+                +91 93352 43958
               </span>
             </div>
             <div className="flex items-center gap-3 text-left">
               <Mail className="w-4 h-4 text-royalGold shrink-0" />
               <span className="font-sans text-sm text-white/80">
-                info@rachha.com
+                rachha346@gmail.com
               </span>
             </div>
             <div className="flex items-center gap-3 text-left">
               <MapPin className="w-4 h-4 text-royalGold shrink-0" />
               <span className="font-sans text-sm text-white/80">
-                Mumbai, India
+                Thane, Mumbai, Maharashtra
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-3 mt-6">
-            <SocialIcon platform="whatsapp" href="#" />
+            <SocialIcon platform="whatsapp" href="https://wa.me/9335243958" />
             <SocialIcon platform="instagram" href="#" />
             <SocialIcon platform="facebook" href="#" />
             <SocialIcon platform="twitter" href="#" />
@@ -253,7 +253,7 @@ export default function ContactBento() {
         {/* Bottom — Map */}
         <div className="flex-1 rounded-2xl border border-royalGold/60 bg-gbrown shadow-lg shadow-royalGold/10 relative min-h-[200px] md:min-h-0 overflow-hidden">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.409789920667!2d72.8348!3d19.0760!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c7f189efc039%3A0x68fdcea8cdfec3c0!2sGateway%20of%20India!5e0!3m2!1sen!2sin"
+            src="https://maps.google.com/maps?q=Thane,+Maharashtra&z=12&ie=UTF8&iwloc=&output=embed"
             className="absolute inset-0 w-full h-full"
             style={{ border: 0 }}
             allowFullScreen
