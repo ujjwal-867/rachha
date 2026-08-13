@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Gallery_Data as DEMO_ITEMS } from "../../../data/GalleryData";
 import type { GalleryData as GalleryItem } from "../../../data/GalleryData";
+import GalleryPageBentoMobile from "./GalleryPageBentoMobile";
 
 const GRID_CELLS = [
   { col: "1 / 2", row: "1 / 3", cols: [1],    rows: [1, 2]       },
@@ -192,7 +193,7 @@ function BentoCell({ item, isHovered, onHover, onLeave, gridArea }: BentoCellPro
   );
 }
 
-export default function GalleryPageBento({
+function DesktopBento({
   items = DEMO_ITEMS as GalleryItem[],
   cycleInterval = 3500,
 }: {
@@ -257,6 +258,33 @@ export default function GalleryPageBento({
           />
         ))}
       </section>
+    </>
+  );
+}
+
+export default function GalleryPageBento({
+  items = DEMO_ITEMS as GalleryItem[],
+  cycleInterval = 3500,
+}: {
+  items?: GalleryItem[];
+  cycleInterval?: number;
+}) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 430);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  return (
+    <>
+      {isMobile ? (
+        <GalleryPageBentoMobile items={items} />
+      ) : (
+        <DesktopBento items={items} cycleInterval={cycleInterval} />
+      )}
     </>
   );
 }

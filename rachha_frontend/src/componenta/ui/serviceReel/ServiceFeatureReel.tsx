@@ -56,6 +56,7 @@ function ServiceCard({
       onMouseLeave={() => setHovered(false)}
       disabled={!isService}
       aria-label={item.title}
+      className="sfr-card"
       style={{
         position: 'relative', flexShrink: 0,
         width: 200, height: 148,
@@ -105,7 +106,7 @@ function SprocketRow({ direction, pos }: { direction: 'L' | 'R'; pos: 'top' | 'b
   const cls = direction === 'L' ? 'sfr-sp-l' : 'sfr-sp-r';
   const holes = Array.from({ length: 32 * TILE });
   return (
-    <div style={{
+    <div className="sfr-sp-row" style={{
       height: 20, background: RAIL_GRADIENT,
       display: 'flex', alignItems: 'center', overflow: 'hidden',
       borderTop:    pos === 'bottom' ? '1px solid rgba(0,0,0,0.45)' : undefined,
@@ -152,7 +153,7 @@ function ReelStrip({
         )`,
       }} />
       <SprocketRow direction={direction} pos="top" />
-      <div style={{ position: 'relative', zIndex: 1, height: 176, overflow: 'hidden' }}>
+      <div className="sfr-strip-inner" style={{ position: 'relative', zIndex: 1, height: 176, overflow: 'hidden' }}>
         <div
           className={animClass}
           style={{
@@ -183,7 +184,7 @@ function ReelStrip({
 //  Divider 
 function ReelDivider() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '14px 0' }}>
+    <div className="sfr-divider" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, padding: '14px 0' }}>
       <div style={{ flex: 1, maxWidth: 200, height: '0.5px', background: `linear-gradient(to right, transparent, rgba(26,18,8,0.18))` }} />
       <span style={{
         fontSize: 15, fontWeight: 600, letterSpacing: '0.26em',
@@ -221,9 +222,42 @@ export default function ServiceFeatureReel({ topItems, bottomItems }: ServiceFea
         .sfr-reel-wrap:hover .sfr-bot  { animation-duration: 600s; }
         .sfr-reel-wrap:hover .sfr-sp-l { animation-duration: 136s; }
         .sfr-reel-wrap:hover .sfr-sp-r { animation-duration: 240s; }
+
+        @media (max-width: 640px) {
+          .sfr-reel-wrap {
+            mask-image: none !important;
+            -webkit-mask-image: none !important;
+          }
+          .sfr-section {
+            padding-top: 28px !important;
+            padding-bottom: 32px !important;
+          }
+          .sfr-strip-inner {
+            height: 126px !important;
+          }
+          .sfr-card {
+            width: 150px !important;
+            height: 110px !important;
+          }
+          .sfr-sp-row {
+            height: 14px !important;
+          }
+          .sfr-sp-row > div {
+            gap: 10px !important;
+            padding: 0 8px !important;
+          }
+          .sfr-sp-row > div > div {
+            width: 9px !important;
+            height: 6px !important;
+          }
+          .sfr-divider {
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+          }
+        }
       `}</style>
 
-      <div style={{ background: ROSE_MIST, paddingTop: 52, paddingBottom: 56 }}>
+      <div className="sfr-section" style={{ background: ROSE_MIST, paddingTop: 52, paddingBottom: 56 }}>
 
         <div style={{ textAlign: 'center', marginBottom: 36, padding: '0 24px' }}>
           <p style={{

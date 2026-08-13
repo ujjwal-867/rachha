@@ -33,14 +33,21 @@ export function ServiceBentoGrid({
 
   return (
     <section className="relative z-10 bg-roseMist text-charcoal">
+      <style>{`
+        @media (orientation: landscape) and (max-height: 420px) {
+          .bento-title { font-size: 18px !important; }
+          .bento-desc { font-size: 11px !important; }
+          .bento-box { padding-top: 4px !important; padding-bottom: 4px !important; min-height: 120px !important; }
+        }
+      `}</style>
       <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
         <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-[2fr_1fr] md:grid-rows-[auto_auto] md:gap-4">
           {/* Left Box - Title and Description */}
-          <div className="h-[260px] md:h-[300px] rounded-[32px] bg-gradient-to-br from-white/60 to-white/40 backdrop-blur-md border border-white/40 p-6 md:p-10 flex flex-col justify-center hover:shadow-2xl hover:shadow-royalGold/10 transition-shadow duration-300 overflow-hidden">
-            <h1 className="gold-title-shine font-serif text-4xl md:text-5xl font-thin tracking-[0.1em] text-charcoal mb-4 uppercase ">
+          <div className="bento-box h-auto min-h-[180px] px-6 py-4 lg:p-10 rounded-[32px] bg-gradient-to-br from-white/60 to-white/40 backdrop-blur-md border border-white/40 flex flex-col justify-center hover:shadow-2xl hover:shadow-royalGold/10 transition-shadow duration-300 overflow-hidden">
+            <h1 className="bento-title gold-title-shine font-serif text-2xl mb-2 lg:text-5xl lg:mb-4 font-thin tracking-[0.1em] text-charcoal uppercase ">
               {title}
             </h1>
-            <p className="font-sans text-base md:text-lg tracking-[0.1em] leading-relaxed text-charcoal/80 transform transition-all duration-700 delay-200">
+            <p className="bento-desc font-sans text-sm lg:text-lg tracking-[0.1em] leading-relaxed text-charcoal/80 transform transition-all duration-700 delay-200">
               {description}
             </p>
           </div>

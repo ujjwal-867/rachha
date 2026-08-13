@@ -8,6 +8,7 @@ export interface ButtonProps {
   startIcon?: ReactElement;
   onClick?: () => void;
   className?: string;
+  disabled?: boolean;
 }
 
 export default function Button({
@@ -16,6 +17,7 @@ export default function Button({
   startIcon,
   onClick,
   className = '',
+  disabled = false,
 }: ButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const flairRef = useRef<HTMLSpanElement>(null);
@@ -126,7 +128,7 @@ export default function Button({
   `.trim().replace(/\s+/g, ' ');
 
   return (
-    <button ref={buttonRef} type="button" onClick={onClick} className={buttonClasses}>
+    <button ref={buttonRef} type="button" onClick={onClick} className={buttonClasses} disabled={disabled} aria-disabled={disabled}>
       <span ref={flairRef} className={flairClasses} />
       {startIcon && <span className="relative z-10 inline-flex">{startIcon}</span>}
       <span className="relative z-10 font-sans font-light tracking-[0.13em]">{text}</span>

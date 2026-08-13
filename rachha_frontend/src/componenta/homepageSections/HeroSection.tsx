@@ -22,6 +22,17 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-roseMist">
+      <style>{`
+        @media (orientation: landscape) and (max-height: 420px) {
+          .hero-section { overflow: visible; }
+          .hero-logo { height: 48px !important; padding-bottom: 4px !important; }
+          .hero-title { font-size: 22px !important; }
+          .hero-subtitle { font-size: 9px !important; }
+          .hero-buttons { margin-top: 4px !important; gap: 6px !important; }
+          .hero-btn { padding: 8px 16px !important; font-size: 11px !important; }
+        }
+      `}</style>
+
       <video
         key={currentSource}
         src={currentSource}
@@ -39,7 +50,7 @@ export default function HeroSection() {
 
 
       {/* brown gradient at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-gbrown to-transparent z-5" />
+      <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-gbrown to-transparent z-10" />
 
 
       {/* curved svg at bottom */}
@@ -63,28 +74,28 @@ export default function HeroSection() {
 
 
       {/* texts over the herosection */}
-      <div className="relative z-20 flex min-h-screen items-center justify-center text-center flex-col "> 
-
+      <div className="hero-section relative z-20 flex min-h-screen items-center justify-center text-center flex-col max-sm:px-4">
 
           <div>
             <img
                 src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776364081/logo_gemeni_golden-removebg-preview_1_blfena.svg"
                 alt="Rachha logo"
-                className={`h-48 pb-10`}
+                className="hero-logo h-48 pb-10 max-sm:h-16 max-sm:pb-3"
               />
           </div>
           
           <div className='flex-col'>
-              <div className='gold-text-shine font-serif font-thin tracking-[0.1em] text-6xl uppercase'>We  Create  Your  Memories</div>
-              <div className='text-roseMist/90 font-sans font-thin tracking-[0.2em] text-1xl italic uppercase'>From ideas to celebration, we handel it all</div>
+              <div className='hero-title gold-text-shine font-serif font-thin tracking-[0.1em] text-6xl uppercase max-sm:text-3xl max-sm:tracking-[0.06em]'>We Create Your Memories</div>
+              <div className='hero-subtitle text-roseMist/90 font-sans font-thin tracking-[0.2em] text-xl italic uppercase max-sm:text-xs max-sm:tracking-[0.12em]'>From ideas to celebration, we handle it all</div>
           
           </div>
          
 
-          <div className='mt-10 flex gap-8'>
+          <div className='hero-buttons mt-10 flex gap-8 max-sm:mt-5 max-sm:gap-3'>
             <Button
               text='SERVICES'
               variant='primary'
+              className='hero-btn'
               onClick={() => {
                 const el = document.getElementById('services');
                 el?.scrollIntoView({ behavior: 'smooth' });
@@ -93,6 +104,7 @@ export default function HeroSection() {
             <Button
               text='CONTACT'
               variant='secondary'
+              className='hero-btn'
               onClick={() => navigate('/contact')}
             />
           </div>

@@ -9,6 +9,7 @@ import About from "./componenta/pages/About"
 import Contact from "./componenta/pages/Contact"
 import EventPage from "./componenta/pages/services/EventPage"
 import Button from "./componenta/ui/button/Button"
+import FloatingSocialBar from "./componenta/ui/social/FloatingSocialBar"
 import { EVENTS } from "./data/eventData"
 
 function AppContent() {
@@ -33,7 +34,11 @@ function AppContent() {
       </Routes>
       <Footer />
 
-      <div className="fixed bottom-6 right-6 z-50 glow-pulse">
+      <div className="hidden lg:block">
+        <FloatingSocialBar />
+      </div>
+
+      <div className="fixed bottom-6 right-6 z-50 glow-pulse hidden lg:block">
         <Button
           text="Request Quote"
           variant="primary"
