@@ -32,7 +32,8 @@ export const CONTACT_PHONE_TEL = "+919335243958";
 export const CONTACT_EMAIL = "rachha346@gmail.com";
 
 export const SOCIALS = {
-  instagram: "https://instagram.com/rachha",
+  instagram:
+    "https://www.instagram.com/rachha.in?igsh=dGgwbnh6eHZkNWo2&igsi=dGgwbnh6eHZkNWo2",
   facebook: "https://facebook.com/rachha",
   whatsapp: "https://wa.me/9335243958",
 };

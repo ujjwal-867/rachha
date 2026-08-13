@@ -244,7 +244,7 @@ export default function ContactBento() {
 
           <div className="flex items-center gap-3 mt-6">
             <SocialIcon platform="whatsapp" href="https://wa.me/9335243958" />
-            <SocialIcon platform="instagram" href="#" />
+            <SocialIcon platform="instagram" href="https://www.instagram.com/rachha.in?igsh=dGgwbnh6eHZkNWo2&igsi=dGgwbnh6eHZkNWo2" />
             <SocialIcon platform="facebook" href="#" />
             <SocialIcon platform="twitter" href="#" />
           </div>

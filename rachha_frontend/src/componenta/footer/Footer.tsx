@@ -70,7 +70,7 @@ const Footer = () => {
 
           <div className="space-y-4">
             <h3 className="text-lg font-serif uppercase tracking-[0.3em] text-royalGold">Follow</h3>
-            <p><a href="https://instagram.com/rachha" target="_blank" rel="noopener noreferrer" className="hover:text-royalGold transition-colors">Instagram</a></p>
+            <p><a href="https://www.instagram.com/rachha.in?igsh=dGgwbnh6eHZkNWo2&igsi=dGgwbnh6eHZkNWo2" target="_blank" rel="noopener noreferrer" className="hover:text-royalGold transition-colors">Instagram</a></p>
             <p><a href="https://facebook.com/rachha" target="_blank" rel="noopener noreferrer" className="hover:text-royalGold transition-colors">Facebook</a></p>
             <p><a href="https://pinterest.com/rachha" target="_blank" rel="noopener noreferrer" className="hover:text-royalGold transition-colors">Pinterest</a></p>
           </div>
