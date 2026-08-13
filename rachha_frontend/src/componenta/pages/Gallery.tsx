@@ -1,8 +1,16 @@
 import GalleryPageBento from "../ui/GalleryBento/GalleryPageBento";
+import Seo from "../../seo/Seo";
+import { SITE_URL, SITE_OG_IMAGE } from "../../seo/siteConfig";
 
 const Gallery = () => {
   return (
     <main>
+      <Seo
+        title="Gallery | Rachha"
+        description="Browse Rachha's event gallery — weddings, birthdays, corporate events, anniversaries, theme parties and more, captured beautifully."
+        canonical={`${SITE_URL}/gallery`}
+        ogImage={SITE_OG_IMAGE}
+      />
       <section className="relative min-h-[60vh] md:min-h-[70vh] overflow-hidden bg-gbrown max-sm:min-h-[40vh]">
         <style>{`
           @media (orientation: landscape) and (max-height: 420px) {

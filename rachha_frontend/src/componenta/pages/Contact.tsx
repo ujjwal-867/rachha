@@ -1,8 +1,16 @@
 import ContactBento from "../ui/contact/ContactBento";
+import Seo from "../../seo/Seo";
+import { SITE_URL, SITE_OG_IMAGE } from "../../seo/siteConfig";
 
 const Contact = () => {
   return (
     <main>
+      <Seo
+        title="Contact Us | Rachha"
+        description="Contact Rachha for event planning, party management and wedding services. Call +91 93352 43958 or email rachha346@gmail.com for a free quote."
+        canonical={`${SITE_URL}/contact`}
+        ogImage={SITE_OG_IMAGE}
+      />
       <section className="relative min-h-[60vh] md:min-h-[70vh] overflow-hidden bg-gbrown max-sm:min-h-[40vh]">
         <style>{`
           @media (orientation: landscape) and (max-height: 420px) {
