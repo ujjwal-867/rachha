@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { EVENTS } from '../../data/eventData';
+import logo from '../../assets/logo.svg';
 
 function NavLink({ to, onClick, children }: { to: string; onClick: () => void; children: React.ReactNode }) {
   return (
@@ -132,7 +133,7 @@ export default function Navbar() {
               <div className="flex items-center justify-between px-5 py-5 border-b border-royalGold/10">
                 <Link to="/" onClick={toggleMobileMenu} className="flex items-center gap-3">
                   <img
-                    src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776364081/logo_gemeni_golden-removebg-preview_1_blfena.svg"
+                    src={logo}
                     alt="Rachha"
                     className="h-8 w-8"
                   />

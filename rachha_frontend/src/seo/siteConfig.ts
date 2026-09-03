@@ -1,3 +1,5 @@
+import logo from "../assets/logo.svg";
+
 export const SITE_URL = "https://rachha.in";
 
 export const SITE_NAME = "Rachha";
@@ -24,8 +26,7 @@ export const SITE_KEYWORDS = [
 export const SITE_OG_IMAGE =
   "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1200";
 
-export const SITE_LOGO =
-  "https://res.cloudinary.com/dlpluej6w/image/upload/v1780428823/logo_gemeni_golden-removebg-preview_1_blfena_twajpg.svg";
+export const SITE_LOGO = logo;
 
 export const CONTACT_PHONE = "+91 93352 43958";
 export const CONTACT_PHONE_TEL = "+919335243958";

@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Phone, Mail, MapPin, CheckCircle, XCircle } from "lucide-react";
 import emailjs from "@emailjs/browser";
 import Button from "../button/Button";
+import logo from "../../../assets/logo.svg";
 
 // const EMAILJS_SERVICE_ID = "service_2yojg4q";
 const EMAILJS_SERVICE_ID = "service_5smhwex";
@@ -212,7 +213,7 @@ export default function ContactBento() {
         {/* Top — Contact Info */}
         <div className="flex-1 rounded-2xl border border-royalGold/60 bg-gbrown p-8 md:p-10 shadow-lg shadow-royalGold/10 flex flex-col items-center justify-center text-center">
           <img
-            src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776364081/logo_gemeni_golden-removebg-preview_1_blfena.svg"
+            src={logo}
             alt="Rachha"
             className="h-20 md:h-24 mb-4"
           />

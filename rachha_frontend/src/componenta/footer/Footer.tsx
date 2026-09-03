@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import logo from '../../assets/logo.svg';
 
 const Footer = () => {
   const footerRef = useRef<HTMLElement | null>(null);
@@ -26,7 +27,7 @@ const Footer = () => {
           <div className="flex items-center justify-center gap-4">
             <a href="#home" className="hover:opacity-80 transition-opacity">
               <img
-                src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776364081/logo_gemeni_golden-removebg-preview_1_blfena.svg"
+                src={logo}
                 alt="Rachha logo"
                 className="h-12 w-auto"
               />

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../ui/button/Button';
+import logo from '../../assets/logo.svg';
 
 const videoSources = [
     'https://res.cloudinary.com/dfr5w7ayr/video/upload/q_auto/f_auto/v1776280570/12796347_3840_2160_60fps_ozhh48.mp4',
@@ -78,7 +79,7 @@ export default function HeroSection() {
 
           <div>
             <img
-                src="https://res.cloudinary.com/dfr5w7ayr/image/upload/v1776364081/logo_gemeni_golden-removebg-preview_1_blfena.svg"
+                src={logo}
                 alt="Rachha logo"
                 className="hero-logo h-48 pb-10 max-sm:h-16 max-sm:pb-3"
               />
